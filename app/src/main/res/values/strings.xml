@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">CheckPoint2</string>
+    <string name="google_repos"> GET EMOJI</string>
+    <string name="random_emoji">RANDOM EMOJI</string>
+    <string name="enter_todo_title">Enter Todo Title</string>
+    <string name="emojilist">EMOJILIST</string>
+    <string name="avatar_list">AVATAR LIST</string>
+    <string name="todo">TODO</string>
+    <string name="enter_the_name_here">Enter the name here</string>
+    <string name="tod">TODO</string>
+    <string name="todoemoji">TODO</string>
+</resources>
