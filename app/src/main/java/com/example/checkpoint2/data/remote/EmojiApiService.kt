@@ -6,9 +6,17 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 
+//defines how Retrofit talks to the web server using HTTP requests.
+interface EmojiApiService {
+    @GET("/emojis")
+    suspend fun getEmojis(): Map<String, String>
+}
+
+
 private val moshi = Moshi.Builder()
     .add(KotlinJsonAdapterFactory())
     .build()
+
 
 //Create a Retrofit object with the base URL and the converter factory
 val retrofit = Retrofit.Builder()
@@ -17,14 +25,8 @@ val retrofit = Retrofit.Builder()
     .build()
 
 
-//defines how Retrofit talks to the web server using HTTP requests.
-interface GithubApiService {
-    @GET("/emojis")
-    suspend fun getEmojis(): Map<String, String>
-}
-
-object GithubApi {
-    val retrofitService : GithubApiService by lazy {
-        retrofit.create(GithubApiService::class.java)
+object EmojiApi {
+    val retrofitService : EmojiApiService by lazy {
+        retrofit.create(EmojiApiService::class.java)
     }
 }
