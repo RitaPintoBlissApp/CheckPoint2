@@ -2,7 +2,7 @@ package com.example.checkpoint2.data.remote
 
 import android.widget.ImageView
 import androidx.core.net.toUri
-import androidx.databinding.BindingAdapter
+//import androidx.databinding.BindingAdapter
 import coil.load
 
 class BindingAdapters {}

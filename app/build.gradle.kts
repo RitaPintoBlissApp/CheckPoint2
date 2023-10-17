@@ -39,9 +39,7 @@ android {
         enable = true
     }
 
-    buildFeatures {
-        dataBinding = true
-    }
+
 }
 
 dependencies {
