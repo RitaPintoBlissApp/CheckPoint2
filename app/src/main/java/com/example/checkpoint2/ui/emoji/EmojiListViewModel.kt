@@ -24,7 +24,7 @@ class EmojiListViewModel(apiService: EmojiApiService) : ViewModel() {
                 val emojis = listResult.map { Emoji(name = it.key, url = it.value) } // Mapeia para List<Emoji>
                 _emojiList.postValue(emojis)  // Atualizar UI
             } catch (e: Exception) {
-                Log.e("APIError", e.toString())// Lidar com erros
+                Log.e("APIError", e.toString())// Lida com os erros
             }
         }
     }

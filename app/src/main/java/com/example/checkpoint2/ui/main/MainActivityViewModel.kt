@@ -1,4 +1,6 @@
 package com.example.checkpoint2.ui.main
 
-class MainActivityViewModel {
+import androidx.lifecycle.ViewModel
+
+class MainActivityViewModel : ViewModel(){
 }

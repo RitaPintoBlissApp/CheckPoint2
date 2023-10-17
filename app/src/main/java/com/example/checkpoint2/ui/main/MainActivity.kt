@@ -5,9 +5,11 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
+import com.example.checkpoint2.R
 import com.example.checkpoint2.data.remote.EmojiApiService
 import com.example.checkpoint2.data.remote.retrofit
 import com.example.checkpoint2.databinding.ActivityMainBinding
+import com.example.checkpoint2.ui.avatar.AvatarListActivity
 import com.example.checkpoint2.ui.avatar.AvatarListViewModel
 import com.example.checkpoint2.ui.emoji.EmojiListActivity
 import com.example.checkpoint2.ui.emoji.EmojiListViewModel
@@ -20,22 +22,20 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var emojiListViewModel: EmojiListViewModel
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_main)
 
         val apiService = retrofit.create(EmojiApiService::class.java)
-        emojiListViewModel = ViewModelProvider(this, EmojiViewModelFactory(apiService)).get(
-            EmojiListViewModel::class.java)
+
 
         //change the emoji
         binding.btRandomEmoji.setOnClickListener {
 
-        emojiListViewModel.getEmojis()
+            emojiListViewModel = ViewModelProvider(this, EmojiViewModelFactory(apiService)).get(EmojiListViewModel::class.java)
+            emojiListViewModel.getEmojis()
 
         }
 
@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
 
         //  navigate to the avatar list
         binding.btAvatarList.setOnClickListener {
-            val navigateAvatarList = Intent(this, AvatarListViewModel::class.java)
+            val navigateAvatarList = Intent(this, AvatarListActivity::class.java)
             startActivity(navigateAvatarList)
         }
 

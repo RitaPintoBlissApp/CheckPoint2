@@ -2,12 +2,10 @@ package com.example.checkpoint2.ui.avatar
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModel
 import com.example.checkpoint2.R
 
-class AvatarListViewModel :AppCompatActivity() {
+class AvatarListViewModel : ViewModel() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_avatarlist)
-    }
+
 }
