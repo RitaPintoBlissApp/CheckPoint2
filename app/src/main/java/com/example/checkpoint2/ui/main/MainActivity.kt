@@ -18,16 +18,13 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(R.layout.activity_main)
 
-        val apiService = retrofit.create(EmojiApiService::class.java)
-
-
+       // val apiService = retrofit.create(EmojiApiService::class.java)
         //change the emoji
         binding.btRandomEmoji.setOnClickListener {
 
