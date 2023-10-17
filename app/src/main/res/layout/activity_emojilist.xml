@@ -10,7 +10,8 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:context=".ui.emoji.EmojiListActivity">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvEmoji"
@@ -19,6 +20,7 @@
             android:clipToPadding="false"
             android:contentDescription="@string/emojilist"
             android:padding="5dp"
+
              />
 
     </FrameLayout>

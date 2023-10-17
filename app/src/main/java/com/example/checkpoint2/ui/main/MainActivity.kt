@@ -10,17 +10,14 @@ import com.example.checkpoint2.data.remote.EmojiApiService
 import com.example.checkpoint2.data.remote.retrofit
 import com.example.checkpoint2.databinding.ActivityMainBinding
 import com.example.checkpoint2.ui.avatar.AvatarListActivity
-import com.example.checkpoint2.ui.avatar.AvatarListViewModel
 import com.example.checkpoint2.ui.emoji.EmojiListActivity
-import com.example.checkpoint2.ui.emoji.EmojiListViewModel
-import com.example.checkpoint2.ui.emoji.EmojiViewModelFactory
 import com.example.checkpoint2.ui.repo.RepoListActivity
 
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var emojiListViewModel: EmojiListViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,15 +31,15 @@ class MainActivity : AppCompatActivity() {
         //change the emoji
         binding.btRandomEmoji.setOnClickListener {
 
-            emojiListViewModel = ViewModelProvider(this, EmojiViewModelFactory(apiService)).get(EmojiListViewModel::class.java)
-            emojiListViewModel.getEmojis()
+            //emojiListViewModel = ViewModelProvider(this, EmojiViewModelFactory(apiService)).get(EmojiListViewModel::class.java)
+            //emojiListViewModel.getEmojis()
 
         }
 
 
         //  navigate to the emoji list
         binding.btEmojiList.setOnClickListener {
-            val navigateEmojiList = Intent(this, EmojiListActivity::class.java)
+            val navigateEmojiList = Intent(this,EmojiListActivity::class.java)
             startActivity(navigateEmojiList)
         }
 
