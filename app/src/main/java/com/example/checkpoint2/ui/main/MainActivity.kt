@@ -2,10 +2,15 @@ package com.example.checkpoint2.ui.main
 
 
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.example.checkpoint2.R
+import com.example.checkpoint2.data.model.Emoji
+import com.example.checkpoint2.data.remote.EmojiApi
 import com.example.checkpoint2.data.remote.EmojiApiService
 import com.example.checkpoint2.data.remote.retrofit
 import com.example.checkpoint2.databinding.ActivityMainBinding
@@ -17,19 +22,25 @@ import com.example.checkpoint2.ui.repo.RepoListActivity
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-
+    private val viewModel: MainActivityViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(R.layout.activity_main)
+        setContentView(binding.root)
 
-       // val apiService = retrofit.create(EmojiApiService::class.java)
+        val apiService = retrofit.create(EmojiApiService::class.java)
         //change the emoji
         binding.btRandomEmoji.setOnClickListener {
 
+
+
             //emojiListViewModel = ViewModelProvider(this, EmojiViewModelFactory(apiService)).get(EmojiListViewModel::class.java)
-            //emojiListViewModel.getEmojis()
+           // emojiListViewModel.getEmojis()
+            //ir buscar o emoji a uma lista
+            //colocar o emoji na imageview
+            val Emoji: String =
+            binding.imageView.setImageURI(Uri.parse())
 
         }
 
