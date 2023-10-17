@@ -89,8 +89,8 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="153dp"
+        android:layout_height="135dp"
         android:contentDescription="@string/enter_the_name_here"
         app:layout_constraintBottom_toTopOf="@+id/btRandomEmoji"
         app:layout_constraintEnd_toEndOf="parent"
@@ -98,8 +98,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.812"
-        tools:ignore="ImageContrastCheck"
-        />
+        tools:ignore="ImageContrastCheck" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

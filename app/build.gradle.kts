@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "com.example.checkpoint2"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.checkpoint2"
         minSdk = 33
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -50,10 +50,13 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
 
-    // Retrofit
-    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
-    // Retrofit with Scalar Converter
-    implementation ("com.squareup.retrofit2:converter-scalars:2.9.0")
+    // Moshi
+    implementation ("com.squareup.moshi:moshi-kotlin:1.13.0")
+
+    // Retrofit with Moshi Converter
+    implementation ("com.squareup.retrofit2:converter-moshi:2.9.0")
+    //coil
+    implementation ("io.coil-kt:coil:1.1.1")
 
 
 }

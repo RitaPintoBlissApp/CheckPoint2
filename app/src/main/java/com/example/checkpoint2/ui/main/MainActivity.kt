@@ -1,27 +1,21 @@
-package com.example.checkpoint2
+package com.example.checkpoint2.ui.main
 
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.lifecycle.ViewModelProvider
+import com.example.checkpoint2.data.remote.GithubApiService
+import com.example.checkpoint2.data.remote.retrofit
 import com.example.checkpoint2.databinding.ActivityMainBinding
-import com.example.checkpoint2.network.Emoji
-import com.example.checkpoint2.network.EmojiViewModel
-import com.example.checkpoint2.network.GithubApiService
-import com.example.checkpoint2.network.retrofit
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.example.checkpoint2.ui.emoji.EmojiViewModel
+import com.example.checkpoint2.ui.emoji.EmojiViewModelFactory
+
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-
     private lateinit var emojiViewModel: EmojiViewModel
 
-    val apiService = retrofit.create(GithubApiService::class.java)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,13 +23,18 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        emojiViewModel = ViewModelProvider(this, EmojiViewModelFactory(apiService)).get(EmojiViewModel::class.java)
+        val apiService = retrofit.create(GithubApiService::class.java)
+        emojiViewModel = ViewModelProvider(this, EmojiViewModelFactory(apiService)).get(
+            EmojiViewModel::class.java)
 
         //change the emoji
         binding.btRandomEmoji.setOnClickListener {
 
-        emojiViewModel.SearchEmojis()
+        emojiViewModel.searchEmojis()
+
         }
+
+
 
 
         //  navigate to the emoji list

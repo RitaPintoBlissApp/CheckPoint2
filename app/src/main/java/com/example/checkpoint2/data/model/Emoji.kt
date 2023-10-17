@@ -1,3 +1,3 @@
-package com.example.checkpoint2.network
+package com.example.checkpoint2.data.model
 
 data class Emoji(val name: String, val url: String)
