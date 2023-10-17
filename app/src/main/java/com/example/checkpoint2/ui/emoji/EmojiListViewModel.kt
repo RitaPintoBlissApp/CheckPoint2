@@ -39,4 +39,6 @@ class EmojiListViewModel(apiService: EmojiApiService) : ViewModel() {
         }
     }
 
+
+
 }

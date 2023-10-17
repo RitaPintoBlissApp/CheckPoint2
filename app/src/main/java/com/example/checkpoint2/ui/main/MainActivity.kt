@@ -9,6 +9,7 @@ import com.example.checkpoint2.data.remote.EmojiApiService
 import com.example.checkpoint2.data.remote.retrofit
 import com.example.checkpoint2.databinding.ActivityMainBinding
 import com.example.checkpoint2.ui.avatar.AvatarListViewModel
+import com.example.checkpoint2.ui.emoji.EmojiListActivity
 import com.example.checkpoint2.ui.emoji.EmojiListViewModel
 import com.example.checkpoint2.ui.emoji.EmojiViewModelFactory
 import com.example.checkpoint2.ui.repo.RepoListActivity
@@ -41,21 +42,21 @@ class MainActivity : AppCompatActivity() {
 
         //  navigate to the emoji list
         binding.btEmojiList.setOnClickListener {
-            val navigateEmojiList = Intent(this, emojiListViewModel::class.java)
+            val navigateEmojiList = Intent(this, EmojiListActivity::class.java)
             startActivity(navigateEmojiList)
         }
 
 
         //  navigate to the avatar list
         binding.btAvatarList.setOnClickListener {
-            val navigateEmojiList = Intent(this, AvatarListViewModel::class.java)
-            startActivity(navigateEmojiList)
+            val navigateAvatarList = Intent(this, AvatarListViewModel::class.java)
+            startActivity(navigateAvatarList)
         }
 
         //to Google Rep
         binding.btGoogleRepos.setOnClickListener {
-            val navigateEmojiList = Intent(this, RepoListActivity::class.java)
-            startActivity(navigateEmojiList)
+            val navigateGoogleRepActivity = Intent(this,RepoListActivity::class.java)
+            startActivity(navigateGoogleRepActivity)
         }
 
     }
