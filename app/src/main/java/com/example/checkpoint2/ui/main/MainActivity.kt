@@ -7,8 +7,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.core.net.toUri
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import coil.load
 import com.example.checkpoint2.R
 import com.example.checkpoint2.data.model.Emoji
 import com.example.checkpoint2.data.remote.EmojiApi
@@ -31,10 +33,14 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val apiService = retrofit.create(EmojiApiService::class.java)
+
+        viewModel.getEmojis()
+
+        //viewModel.getEmoji()
+
+
         //change the emoji
         binding.btRandomEmoji.setOnClickListener {
-
-
         /*
         * checkpoint 1
         *  btnChangeEmoji.setOnClickListener {
@@ -42,15 +48,18 @@ class MainActivity : AppCompatActivity() {
             val randomemoji = emojis[randomIndex]
             imgEmoji.setImageResource(randomemoji)
         }
-*/
-
-            //fornecer a lista de emojis
-            val emojis = viewModel.getEmojis()
+        *
+*/          //fornecer a lista de emojis
             //ir buscar o emoji a uma lista
-            val emoji = emojis.random()
             //colocar o emoji na imageview
-            binding.imageView.setImageURI(Uri.parse(emoji.url))
 
+            viewModel.getEmoji()
+
+            val imgUrl = viewModel.emoji.value?.imgSrc
+
+            val imgUri = imgUrl?.toUri()?.buildUpon()?.scheme("https")?.build()
+            binding.imageView.load(imgUri){
+            }
         }
 
 

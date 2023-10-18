@@ -7,6 +7,8 @@
     >
 
 
+
+
     <Button
         android:id="@+id/btGoogleRepos"
         android:layout_width="250dp"
@@ -87,6 +89,8 @@
         app:layout_constraintVertical_bias="0.722"
         />
 
+
+
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="153dp"
@@ -99,9 +103,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.812"
         tools:ignore="ImageContrastCheck"
-        app:imageUrl="@{photo.imgSrcUrl}"
-
-       />
+        />
 
 
 

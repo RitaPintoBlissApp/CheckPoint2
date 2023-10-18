@@ -16,19 +16,29 @@ class MainActivityViewModel : ViewModel(){
 
     private val _emoji = MutableLiveData<Emoji>()
     val emoji : LiveData<Emoji> get() = _emoji
+
+
     fun getEmojis() {
         viewModelScope.launch {
             try {
                 // chamada à API com o Retrofit
                 val listResult = EmojiApi.retrofitService.getEmojis()
-                val emoji = listResult.map { Emoji(name = it.key, url = it.value) } // Mapeia para List<Emoji>
+                val emoji = listResult.map { Emoji(name = it.key, imgSrc = it.value) } // Mapeia para List<Emoji>
                 _emojiList.postValue(emoji)  // Atualizar UI
                 _emoji.postValue(emoji.random())
+
             } catch (e: Exception) {
                 Log.e("APIError", e.toString())// Lida com os erros
             }
         }
     }
 
-
+    fun getEmoji(){
+         _emojiList.value?.let { emojis ->
+            if (emojis.isNotEmpty()) {
+                val randomIndex = (0 until emojis.size).random()
+                _emoji.postValue(emojis[randomIndex])
+            }
+        }
+    }
 }

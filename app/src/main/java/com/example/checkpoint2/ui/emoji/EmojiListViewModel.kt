@@ -12,7 +12,7 @@ import com.example.checkpoint2.data.remote.EmojiApi
 import kotlinx.coroutines.launch
 class EmojiListViewModel(apiService: EmojiApiService) : ViewModel() {
 
-    private val _emojiList = MutableLiveData<List<Emoji>>()
+    private val _emojiList = MutableLiveData<List<Emoji>>() //lista de emojis
     val emojiList: LiveData<List<Emoji>> get() = _emojiList
 
 
@@ -21,8 +21,9 @@ class EmojiListViewModel(apiService: EmojiApiService) : ViewModel() {
             try {
                 // chamada à API com o Retrofit
                 val listResult = EmojiApi.retrofitService.getEmojis()
-                val emojis = listResult.map { Emoji(name = it.key, url = it.value) } // Mapeia para List<Emoji>
+                val emojis = listResult.map { Emoji(name = it.key, imgSrc = it.value) } // Mapeia para List<Emoji>
                 _emojiList.postValue(emojis)  // Atualizar UI
+
             } catch (e: Exception) {
                 Log.e("APIError", e.toString())// Lida com os erros
             }
