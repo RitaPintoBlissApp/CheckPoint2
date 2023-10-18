@@ -11,8 +11,8 @@ import kotlinx.coroutines.launch
 
 class MainActivityViewModel : ViewModel(){
 
-    private val _emojiListList = MutableLiveData<List<Emoji>>()
-    val emojiListList : LiveData<List<Emoji>> get() = _emojiListList
+    private val _emojiList = MutableLiveData<List<Emoji>>()
+    val emojiList : LiveData<List<Emoji>> get() = _emojiList
 
     private val _emoji = MutableLiveData<Emoji>()
     val emoji : LiveData<Emoji> get() = _emoji
@@ -22,7 +22,7 @@ class MainActivityViewModel : ViewModel(){
                 // chamada à API com o Retrofit
                 val listResult = EmojiApi.retrofitService.getEmojis()
                 val emoji = listResult.map { Emoji(name = it.key, url = it.value) } // Mapeia para List<Emoji>
-                _emojiListList.postValue(emoji)  // Atualizar UI
+                _emojiList.postValue(emoji)  // Atualizar UI
                 _emoji.postValue(emoji.random())
             } catch (e: Exception) {
                 Log.e("APIError", e.toString())// Lida com os erros

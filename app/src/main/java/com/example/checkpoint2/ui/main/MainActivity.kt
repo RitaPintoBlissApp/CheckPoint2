@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -34,13 +35,21 @@ class MainActivity : AppCompatActivity() {
         binding.btRandomEmoji.setOnClickListener {
 
 
+        /*
+        * checkpoint 1
+        *  btnChangeEmoji.setOnClickListener {
+            val randomIndex = (emojis.indices).random()
+            val randomemoji = emojis[randomIndex]
+            imgEmoji.setImageResource(randomemoji)
+        }
+*/
 
-            //emojiListViewModel = ViewModelProvider(this, EmojiViewModelFactory(apiService)).get(EmojiListViewModel::class.java)
-           // emojiListViewModel.getEmojis()
+            //fornecer a lista de emojis
+            val emojis = viewModel.getEmojis()
             //ir buscar o emoji a uma lista
+            val emoji = emojis.random()
             //colocar o emoji na imageview
-            val Emoji: String =
-            binding.imageView.setImageURI(Uri.parse())
+            binding.imageView.setImageURI(Uri.parse(emoji.url))
 
         }
 
