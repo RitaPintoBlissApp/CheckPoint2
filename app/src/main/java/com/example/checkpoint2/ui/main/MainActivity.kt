@@ -59,6 +59,8 @@ class MainActivity : AppCompatActivity() {
 
             val imgUri = imgUrl?.toUri()?.buildUpon()?.scheme("https")?.build()
             binding.imageView.load(imgUri){}
+
+
         }
 
 

@@ -10,7 +10,9 @@ import com.example.checkpoint2.data.model.Emoji
 import com.example.checkpoint2.data.remote.EmojiApi
 
 import kotlinx.coroutines.launch
-class EmojiListViewModel(apiService: EmojiApiService) : ViewModel() {
+import java.text.FieldPosition
+
+class EmojiListViewModel() : ViewModel() {
 
     private val _emojiList = MutableLiveData<List<Emoji>>() //lista de emojis
     val emojiList: LiveData<List<Emoji>> get() = _emojiList
@@ -30,7 +32,10 @@ class EmojiListViewModel(apiService: EmojiApiService) : ViewModel() {
         }
     }
 
-
-
-
+     fun removeEmoji(position: Int){
+        _emojiList.value?.toMutableList()?.let {  emojis ->
+            emojis.removeAt(position)
+            _emojiList.postValue(emojis)
+        }
+    }
 }
