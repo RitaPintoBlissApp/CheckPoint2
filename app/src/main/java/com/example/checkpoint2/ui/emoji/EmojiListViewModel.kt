@@ -30,15 +30,6 @@ class EmojiListViewModel(apiService: EmojiApiService) : ViewModel() {
         }
     }
 
-    fun getRandomEmoji(): Emoji? {
-        return _emojiList.value?.let { emojis ->
-            if (emojis.isNotEmpty()) {
-                val randomIndex = (0 until emojis.size).random()
-                return emojis[randomIndex]
-            }
-            return null
-        }
-    }
 
 
 

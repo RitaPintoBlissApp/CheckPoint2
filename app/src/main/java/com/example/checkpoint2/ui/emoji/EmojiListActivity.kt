@@ -28,23 +28,22 @@ class EmojiListActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        //inflate de emoji list layput
         binding = ActivityEmojiListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //configure the gridlayout with 4 colums
         binding.rvEmoji.layoutManager = GridLayoutManager(this,4)
 
-        // Configurar o adapter
-        adapter = EmojiAdapter()
+        //get the emoji list
+        var emojilist = viewModel.getEmojis()
+
+        //put the data in the recyclerview
         binding.rvEmoji.adapter = adapter
 
-        //gerar a lista de emojis
-        viewModel.getEmojis()
 
-        // Observar as mudanças na lista de emojis
-        viewModel.emojiList.observe(this, { emojis ->
-            // Atualizar o adapter com a nova lista de emojis
-            adapter.submitList(emojis)
-        })
+
+
         //remover
         //refresh
 

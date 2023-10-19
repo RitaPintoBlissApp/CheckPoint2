@@ -58,8 +58,7 @@ class MainActivity : AppCompatActivity() {
             val imgUrl = viewModel.emoji.value?.imgSrc
 
             val imgUri = imgUrl?.toUri()?.buildUpon()?.scheme("https")?.build()
-            binding.imageView.load(imgUri){
-            }
+            binding.imageView.load(imgUri){}
         }
 
 
