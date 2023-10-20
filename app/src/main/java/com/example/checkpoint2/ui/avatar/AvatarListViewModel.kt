@@ -14,21 +14,15 @@ class AvatarListViewModel : ViewModel() {
 
     private val _avatarList = MutableLiveData<List<Avatar>>()
 
-    val avatarList:LiveData<List<Avatar>> get() = _avatarList
+    val avatarList:LiveData<List<Avatar>> get() = _avatarList //para leitura externa e representação dos avatares
 
     fun getAvatar(){
         viewModelScope.launch {
             try{
-                val listResult = AvatarApi.retrofitAvatarService.getAvatar()
-               // val avatars = listResult.map { Avatar(login = it.key, id = it.key, avatarSrc = it.value) }
-                val avatars = listResult.map { response ->
-                    Avatar(
-                        login = response.key,
-                        id = response.id.toIntOrNull() ?: 0, // Converter para Int ou usar 0 em caso de falha na conversão
-                        avatarSrc = response.value
-                    )
-                }
-                _avatarList.postValue(avatars)
+                val listResult = AvatarApi.retrofitAvatarService.getAvatar() // chamada à API, através do retrofit
+               // val avatars = listResult.map { Avatar( name = it.name, id = it.id, avatarSrc = it.avatarSrc) }
+                val avatars = getValue(listResult)
+                _avatarList.postValue(avatars) //atualiza
             }catch (e:Exception){
                 Log.e("APIError", e.toString())
                 _avatarList.postValue(emptyList())
@@ -38,9 +32,26 @@ class AvatarListViewModel : ViewModel() {
 
     fun removeAvatar(position:Int){
         _avatarList.value?.toMutableList()?.let { avatars ->
-            avatars.removeAt(position)
-            _avatarList.postValue(avatars)
+            avatars.removeAt(position) // remove o avatar da lista 'avatars'
+            _avatarList.postValue(avatars) // atualiza a livedata
         }
     }
 
+    fun getValue( mapaV: List<Map< String, Any>>): List<Avatar>{
+        var user=""
+        var id: Double = 0.0
+        var url = ""
+        var listaauxiliar = mutableListOf<Avatar>()
+        mapaV.forEach(){
+            it.forEach(){
+                when (it.key) {
+                    "name" -> {user = it.value as String}
+                    "id" -> {id = it.value as Double}
+                    "avatar_url" -> {url = it.value as String}
+                }
+            }
+           listaauxiliar.add( Avatar(name = user, id=id, avatarSrc = url ))
+        }
+    return listaauxiliar
+    }
 }

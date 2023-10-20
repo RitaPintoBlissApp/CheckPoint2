@@ -1,5 +1,6 @@
 package com.example.checkpoint2.data.remote
 
+import com.example.checkpoint2.data.model.Avatar
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
@@ -8,7 +9,8 @@ import retrofit2.http.GET
 
 interface AvatarApiService{
     @GET("/users")
-    suspend fun getAvatar(): Map<String, String>
+    //suspend fun getAvatar(): List<Avatar>
+    suspend fun getAvatar(): List<Map<String,Any>>
 }
 
 private val moshiAvatar = Moshi.Builder()
