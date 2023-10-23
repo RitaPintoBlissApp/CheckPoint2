@@ -6,7 +6,7 @@ import androidx.databinding.BindingAdapter
 //import androidx.databinding.BindingAdapter
 import coil.load
 
-/*
+
 fun BindingAdapters(imgView: ImageView, imgUrl: String?)  {
 
     @BindingAdapter("url")
@@ -17,5 +17,5 @@ fun BindingAdapters(imgView: ImageView, imgUrl: String?)  {
         }
     }
 
-}*/
+}
 
