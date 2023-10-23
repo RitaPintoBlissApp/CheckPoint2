@@ -1,5 +1,6 @@
 package com.example.checkpoint2.ui.avatar
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,6 +36,7 @@ class AvatarAdapter(
         return avatarList.size
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun updateItem(list: List<Avatar>?) {
         avatarList.clear()
         if (list != null) {

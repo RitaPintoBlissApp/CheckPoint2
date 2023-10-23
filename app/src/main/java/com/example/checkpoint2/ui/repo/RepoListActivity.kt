@@ -4,24 +4,21 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.checkpoint2.data.remote.GoogleRApi
-import com.example.checkpoint2.data.remote.ReposApiService
 import com.example.checkpoint2.databinding.ActivityGoogleRepoBinding
 import com.example.checkpoint2.ui.repo.factory.RepoListViewModelFactory
 import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
-class RepoListActivity() : AppCompatActivity(){
+class RepoListActivity : AppCompatActivity(){
 
     private lateinit var binding: ActivityGoogleRepoBinding
     private val viewModel: RepoListViewModel  by viewModels(factoryProducer = {
         val repoListFactory = RepoListViewModelFactory(GoogleRApi())
-        val repoList = ViewModelProvider(this, repoListFactory)
-            .get(RepoListViewModel::class.java)
+        ViewModelProvider(this, repoListFactory)[RepoListViewModel::class.java]
     repoListFactory
     })
     private lateinit var mAdapter: GoogleRepoAdapter

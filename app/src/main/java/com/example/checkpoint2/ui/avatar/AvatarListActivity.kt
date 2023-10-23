@@ -3,9 +3,7 @@ package com.example.checkpoint2.ui.avatar
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.checkpoint2.R
 import com.example.checkpoint2.databinding.ActivityAvatarListBinding
-import com.example.checkpoint2.databinding.ActivityEmojiListBinding
 
 class AvatarListActivity : AppCompatActivity() {
 

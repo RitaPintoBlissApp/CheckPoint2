@@ -11,7 +11,6 @@ import com.example.checkpoint2.databinding.GooglerepoGridItemBinding
 /*class GoogleRepoAdapter(
     private val onItemClick: (position: Int) -> Unit
 ): RecyclerView.Adapter<GoogleRepoAdapter.ViewHolderEatchGoogleRepo>() */
-
 class GoogleRepoAdapter: PagingDataAdapter
 <GoogleRepo, GoogleRepoAdapter.MyViewHolder>
     (diffcallback) {
@@ -37,7 +36,7 @@ class GoogleRepoAdapter: PagingDataAdapter
         //this method getItem() is from PagingDataAdapter...
 
         holder.binding.apply {
-            textView.text == "${currentItem?.fullName}"
+            textView.text = "${currentItem?.fullName}"
         }
 
     }

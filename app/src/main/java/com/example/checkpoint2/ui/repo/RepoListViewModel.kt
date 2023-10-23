@@ -7,13 +7,11 @@ import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.example.checkpoint2.data.paging.GoogleRepoSource
 import com.example.checkpoint2.data.remote.GoogleRApi
-import com.example.checkpoint2.data.remote.ReposApiService
-import kotlinx.coroutines.launch
 
 class RepoListViewModel(
     private val apiservice: GoogleRApi
 ): ViewModel() {
-    val listData = Pager(PagingConfig(pageSize = 1)){
+    val listData = Pager(PagingConfig(pageSize = 20)){
         GoogleRepoSource(apiservice)
     }.flow.cachedIn(viewModelScope)
 }
