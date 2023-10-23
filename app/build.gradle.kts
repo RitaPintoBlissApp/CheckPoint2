@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
 
+
 }
 
 android {
@@ -51,6 +52,7 @@ dependencies {
     implementation("com.google.android.material:material:1.10.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+    implementation("androidx.databinding:baseLibrary:3.2.0-alpha11")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -74,5 +76,13 @@ dependencies {
     implementation ("androidx.room:room-runtime:2.5.2")
     //kapt ("androidx.room:room-compiler:2.5.2")
 
+    //paging
+    implementation("androidx.paging:paging-common-ktx:3.2.1")
+    implementation("androidx.paging:paging-runtime-ktx:3.2.1")
+
+    //coroutines
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
+    implementation("androidx.activity:activity-ktx:1.8.0")
 
 }

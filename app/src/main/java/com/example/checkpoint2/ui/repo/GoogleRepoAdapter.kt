@@ -1,21 +1,21 @@
 package com.example.checkpoint2.ui.repo
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
-import com.example.checkpoint2.R
-import com.example.checkpoint2.data.model.Emoji
 import com.example.checkpoint2.data.model.GoogleRepo
+import com.example.checkpoint2.databinding.GooglerepoGridItemBinding
 
-class GoogleRepoAdapter(
+/*class GoogleRepoAdapter(
     private val onItemClick: (position: Int) -> Unit
-): RecyclerView.Adapter<GoogleRepoAdapter.ViewHolderEatchGoogleRepo>() {
+): RecyclerView.Adapter<GoogleRepoAdapter.ViewHolderEatchGoogleRepo>() */
+class GoogleRepoAdapter: PagingDataAdapter<
+        GoogleRepo, GoogleRepoAdapter.MyViewHolder>(diffcallback)
+{
 
-    private val googelRepoList = mutableListOf<GoogleRepo>()
+   /* private val googelRepoList = mutableListOf<GoogleRepo>()
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -36,6 +36,13 @@ class GoogleRepoAdapter(
     override fun getItemCount(): Int {
        return googelRepoList.size
     }
+    fun updateItem(list: List<GoogleRepo>?){
+        googelRepoList.clear()
+        if(list !=null){
+            googelRepoList.addAll(list)
+        }
+        notifyDataSetChanged()
+    }
     inner class ViewHolderEatchGoogleRepo(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val ttextView: TextView = itemView.findViewById((R.id.titleTextView))
         init {
@@ -50,6 +57,40 @@ class GoogleRepoAdapter(
             ttextView.text = repo.fullName
 
         }
+    }*/
+
+    inner class MyViewHolder(val binding: GooglerepoGridItemBinding):
+    RecyclerView.ViewHolder(binding.root)
+    companion object {
+        val diffcallback = object :DiffUtil.ItemCallback<GoogleRepo>(){
+            override fun areItemsTheSame(oldItem: GoogleRepo, newItem: GoogleRepo): Boolean {
+              return  oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(oldItem: GoogleRepo, newItem: GoogleRepo): Boolean {
+                return oldItem == newItem
+            }
+
+        }
+    }
+
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+    val currentItem = getItem(position)
+
+        //this method getItem() is from PagingDataAdapter...
+
+        holder.binding.apply {
+
+            textView.text == "${currentItem?.fullName}"
+
+        }
+
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+       return MyViewHolder(GooglerepoGridItemBinding.inflate(
+           LayoutInflater.from(parent.context),
+           parent, false))
     }
 
 }
