@@ -12,7 +12,7 @@ import com.example.checkpoint2.data.model.Avatar
 
 
 class AvatarAdapter(
-                    private val onItemClick: (position: Int) -> Unit)
+    private val onItemClick: (position: Int) -> Unit)
     : RecyclerView.Adapter<AvatarAdapter.ViewHolderEatchAvatar>() {
 
     private val avatarList = mutableListOf<Avatar>()

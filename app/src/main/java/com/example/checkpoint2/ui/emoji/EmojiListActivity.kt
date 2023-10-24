@@ -1,17 +1,8 @@
 package com.example.checkpoint2.ui.emoji
 
 import android.os.Bundle
-import android.widget.Button
-import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.net.toUri
 import androidx.recyclerview.widget.GridLayoutManager
-import coil.load
-import com.example.checkpoint2.R
-import com.example.checkpoint2.data.model.Emoji
-import com.example.checkpoint2.data.remote.EmojiApiService
-import com.example.checkpoint2.data.remote.retrofit
 import com.example.checkpoint2.databinding.ActivityEmojiListBinding
 
 

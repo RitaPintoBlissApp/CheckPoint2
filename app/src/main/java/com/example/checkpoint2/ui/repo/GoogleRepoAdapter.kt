@@ -1,19 +1,69 @@
 package com.example.checkpoint2.ui.repo
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import androidx.paging.PagingDataAdapter
-import androidx.recyclerview.widget.DiffUtil
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.checkpoint2.R
 import com.example.checkpoint2.data.model.GoogleRepo
-import com.example.checkpoint2.databinding.GooglerepoGridItemBinding
 
-/*class GoogleRepoAdapter(
+
+class GoogleRepoAdapter(
     private val onItemClick: (position: Int) -> Unit
-): RecyclerView.Adapter<GoogleRepoAdapter.ViewHolderEatchGoogleRepo>() */
-class GoogleRepoAdapter: PagingDataAdapter
-<GoogleRepo, GoogleRepoAdapter.MyViewHolder>
-    (diffcallback) {
+): RecyclerView.Adapter<GoogleRepoAdapter.ViewHolderEatchGoogleRepo>() {
+
+    private val googleRepoList = mutableListOf<GoogleRepo>()
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderEatchGoogleRepo {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.googlerepo_grid_item,parent,false)
+        return ViewHolderEatchGoogleRepo(view)
+    }
+
+    override fun onBindViewHolder(
+        holder:ViewHolderEatchGoogleRepo,
+        position: Int)
+    {
+        val googlerepo = googleRepoList[position]
+        holder.bind(googlerepo)
+
+
+        holder.itemView.setOnClickListener{
+            onItemClick(position)
+        }
+    }
+
+    override fun getItemCount(): Int {
+        return googleRepoList.size
+    }
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateItem(list: List<GoogleRepo>?){
+        googleRepoList.clear()
+        if(list !=null){
+            googleRepoList.addAll(list)
+        }
+        notifyDataSetChanged()
+    }
+
+    inner class ViewHolderEatchGoogleRepo(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val ttextView: TextView = itemView.findViewById((R.id.textView))
+        init {
+            itemView.setOnClickListener{
+                onItemClick(bindingAdapterPosition)
+            }
+        }
+        //attributes an imagem to eatch ImageView
+        fun bind(repo: GoogleRepo) {
+            //val imgUri = imgUrl?.toUri()?.buildUpon()?.scheme("https")?.build()
+            ttextView.text = repo.fullName
+        }
+    }
+
+}
+
+
+/*class GoogleRepoAdapter: PagingDataAdapter<GoogleRepo,GoogleRepoAdapter.MyViewHolder>(diffcallback){
 
     inner class MyViewHolder(val binding: GooglerepoGridItemBinding):
     RecyclerView.ViewHolder(binding.root)
@@ -34,7 +84,6 @@ class GoogleRepoAdapter: PagingDataAdapter
     val currentItem = getItem(position)
 
         //this method getItem() is from PagingDataAdapter...
-
         holder.binding.apply {
             textView.text = "${currentItem?.fullName}"
         }
@@ -42,58 +91,10 @@ class GoogleRepoAdapter: PagingDataAdapter
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-       return MyViewHolder(GooglerepoGridItemBinding.inflate(
+       return MyViewHolder(
+           GooglerepoGridItemBinding.inflate(
            LayoutInflater.from(parent.context),
            parent, false))
 
     }
-
-
-}
-
-
-
-
-/* private val googelRepoList = mutableListOf<GoogleRepo>()
- override fun onCreateViewHolder(
-     parent: ViewGroup,
-     viewType: Int
- ): ViewHolderEatchGoogleRepo {
-     val view = LayoutInflater.from(parent.context)
-         .inflate(R.layout.googlerepo_grid_item,parent,false)
-     return ViewHolderEatchGoogleRepo(view)
- }
-
- override fun onBindViewHolder(
-     holder:ViewHolderEatchGoogleRepo,
-     position: Int)
- {
-     val googlerepo = googelRepoList[position]
-     holder.bind(googlerepo)
- }
-
- override fun getItemCount(): Int {
-    return googelRepoList.size
- }
- fun updateItem(list: List<GoogleRepo>?){
-     googelRepoList.clear()
-     if(list !=null){
-         googelRepoList.addAll(list)
-     }
-     notifyDataSetChanged()
- }
- inner class ViewHolderEatchGoogleRepo(itemView: View) : RecyclerView.ViewHolder(itemView) {
-     private val ttextView: TextView = itemView.findViewById((R.id.titleTextView))
-     init {
-         itemView.setOnClickListener{
-             onItemClick(bindingAdapterPosition)
-         }
-     }
-     //attributes an imagem to eatch ImageView
-     fun bind(repo: GoogleRepo) {
-         //val imgUri = imgUrl?.toUri()?.buildUpon()?.scheme("https")?.build()
-
-         ttextView.text = repo.fullName
-
-     }
- }*/
+}*/
