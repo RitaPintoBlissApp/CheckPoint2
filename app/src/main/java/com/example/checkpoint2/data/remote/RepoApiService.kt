@@ -6,10 +6,14 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 interface ReposApiService {
     @GET("/users/google/repos")
-    suspend fun getGoogleRepo(): List<GoogleRepo>
+    suspend fun getGoogleRepo(
+        @Query("page") page : Int,
+        @Query("limit") limit : Int,
+    ): List<GoogleRepo>
 
 }
 
