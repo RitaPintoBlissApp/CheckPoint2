@@ -23,7 +23,6 @@ class RepoListActivity : AppCompatActivity(){
         binding = ActivityGoogleRepoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
         binding.rvGoogleRepos.layoutManager =  LinearLayoutManager(this)
 
         val reposLayoutManager = binding.rvGoogleRepos.layoutManager as LinearLayoutManager
@@ -42,6 +41,7 @@ class RepoListActivity : AppCompatActivity(){
         binding.rvGoogleRepos.addOnScrollListener(object : RecyclerView.OnScrollListener(){
              private fun update(){
                  viewModel.getNextGoogleRepos()
+                 //para de acrescentar
              }
 
             //verifica se chegou ao fim da lista

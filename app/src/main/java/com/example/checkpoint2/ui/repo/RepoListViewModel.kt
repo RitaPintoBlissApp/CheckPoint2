@@ -11,8 +11,8 @@ import kotlinx.coroutines.launch
 
 class RepoListViewModel(): ViewModel() {
 
-    private var currentPage = 0
-    private var currentLimit = 20
+    private var currentPage = 1
+    private var currentLimit = 30
 
     private var isLoading = false
 
@@ -36,28 +36,25 @@ class RepoListViewModel(): ViewModel() {
 
 
     fun getNextGoogleRepos(){
-        if (isLoading) { // is loading está a falso pq iniciei assim em cima
-            return
-        }
 
-        viewModelScope.launch {
-            try{
-                //dizer q estás a fazer update
-                //variavel   diga se está a fazer ou n update
-                isLoading = true
-                currentPage++ //incrementa a pagina
-                val listResult = GoogleRApi.GoogleRepoService.getGoogleRepo(limit = currentLimit, page = currentPage ) // chama a API
-                val repos = listResult.map { GoogleRepo(id = it.id, fullName = it.fullName, private = it.private) }
-                val currentList = _googleRepoList.value.orEmpty()
-                _googleRepoList.value = currentList + repos // Atualiza a lista atual com os novos repositórios
-                isLoading = false
+            viewModelScope.launch {
+                try{
+                    //dizer q estás a fazer update
+                    //variavel   diga se está a fazer ou n update
+                    isLoading = true
+                    currentPage++ //incrementa a pagina
+                    val listResult = GoogleRApi.GoogleRepoService.getGoogleRepo(limit = currentLimit, page = currentPage ) // chama a API
+                    val repos = listResult.map { GoogleRepo(id = it.id, fullName = it.fullName, private = it.private) }
+                    val currentList = _googleRepoList.value.orEmpty()
+                    _googleRepoList.value = currentList + repos // Atualiza a lista atual com os novos repositórios
 
-            }catch (e:Exception){
-                Log.e("APIError", e.toString())
-                isLoading = false
+
+                }catch (e:Exception){
+                    Log.e("APIError", e.toString())
+
+                }
+
             }
-
-        }
     }
 }
 
