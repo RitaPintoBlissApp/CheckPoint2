@@ -1,6 +1,7 @@
 package com.example.checkpoint2.ui.main
 
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,6 +10,7 @@ import com.example.checkpoint2.data.model.Avatar
 import com.example.checkpoint2.data.model.Emoji
 import com.example.checkpoint2.data.remote.AvatarApi
 import com.example.checkpoint2.data.remote.EmojiApi
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
 
 class MainActivityViewModel : ViewModel() {
@@ -18,9 +20,9 @@ class MainActivityViewModel : ViewModel() {
     val emoji: LiveData<Emoji> get() = _emoji
 
 
-    private val _avatarSearchResult = MutableLiveData<List<Avatar>>()
+  private val _avatar = MutableLiveData<Avatar>()
+    val avatar: LiveData<Avatar> get() = _avatar
 
-    val avatarSearchResult: MutableLiveData<List<Avatar>> get() = _avatarSearchResult
 
 
     fun getEmojis() {
@@ -53,44 +55,21 @@ class MainActivityViewModel : ViewModel() {
     }
 
 
-    fun seartchAvatar(nome: String) {
+    fun seartchAvatar(nome: String, callback:(String)-> Unit) {
         viewModelScope.launch {
             try {
-                val listResult = AvatarApi.retrofitAvatarService.searchAvatar(nome) // chamada à API, através do retrofit
-                val avatars = getValue(listResult)
-                _avatarSearchResult.postValue(avatars) //atualiza
+                val avatarResult = AvatarApi.retrofitAvatarService.searchAvatar(nome) // chamada à API, através do retrofit
+                _avatar.postValue(avatarResult) //atualiza
             } catch (e: Exception) {
-                Log.e("APIError", e.toString())
-                _avatarSearchResult.postValue(emptyList())
+                Log.v("TAG", "Erro na API ")
+                callback("Erro na Api")
+                //showMessage()
+                //_avatar.postValue() //avatar default
+
             }
         }
     }
 
-    fun getValue(mapaV: List<Map<String, Any>>): List<Avatar> {
-        var user = ""
-        var id: Double = 0.0
-        var url = ""
-        var listaauxiliar = mutableListOf<Avatar>()
-        mapaV.forEach() {
-            it.forEach() {
-                when (it.key) {
-                    "name" -> {
-                        user = it.value as String
-                    }
-
-                    "id" -> {
-                        id = it.value as Double
-                    }
-
-                    "avatar_url" -> {
-                        url = it.value as String
-                    }
-                }
-            }
-            listaauxiliar.add(Avatar(name = user, id = id, avatarSrc = url))
-        }
-        return listaauxiliar
-    }
 
 }
 

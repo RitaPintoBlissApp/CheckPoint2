@@ -72,24 +72,35 @@ class MainActivity : AppCompatActivity() {
             // verificar se há algum nome ("login") assim na lista dos users
             // se ouver tirar o ("avatar_ul") e colocar o msm na
 
-            viewModel.seartchAvatar(textoDigitado)
+            viewModel.seartchAvatar(textoDigitado) { Toast.makeText(this, it, Toast.LENGTH_SHORT).show() }
 
-            viewModel.avatarSearchResult.observe(this) { avatarList ->
-                if (avatarList != null && avatarList.isNotEmpty()) {
-                    val firstAvatar = avatarList.first()
-                    imgUrlAvatar.setImageURI(Uri.parse(firstAvatar.avatarSrc))
+            val imgUrl = viewModel.avatar.value?.avatarSrc
+
+            val imgUri = imgUrl?.toUri()?.buildUpon()?.scheme("https")?.build()
+            binding.imageView.load(imgUri){}
+
+            val sharedPreferences = getPreferences(Context.MODE_PRIVATE) //Obtém uma referência às preferências compartilhadas para armazenar dados localmente.
+            val editor = sharedPreferences.edit()
+
+            editor.putString("avatarUrl", imgUrl)//Armazena a URL do avatar nas preferências compartilhadas.
+            editor.apply()
+
+            /*
+            viewModel.seartchAvatar().observe(this) { avatar ->
+                if (avatar != null ) { // se n for nula
+                    imgUrlAvatar.setImageURI(Uri.parse(avatar.avatarSrc)) //Defino a imagem do imgUrlAvatar com a URI do avatar obtido
 
                     // Salva a URL do avatar nas preferências compartilhadas para uso futuro.
-                    val sharedPreferences = getPreferences(Context.MODE_PRIVATE)
+                    val sharedPreferences = getPreferences(Context.MODE_PRIVATE) //Obtém uma referência às preferências compartilhadas para armazenar dados localmente.
                     val editor = sharedPreferences.edit()
-                    editor.putString("avatarUrl", firstAvatar.avatarSrc)
+                    editor.putString("avatarUrl", avatar.avatarSrc)//Armazena a URL do avatar nas preferências compartilhadas.
                     editor.apply()
                 } else {
 
                     // Se a lista de avatares estiver vazia, define uma imagem de erro no ImageView.
                     imgUrlAvatar.setImageResource(R.drawable.error404)
                     Log.v("TAG","ERRO404")
-                }
+                }*/
 
         }
 
@@ -110,4 +121,4 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-   }}
+   }

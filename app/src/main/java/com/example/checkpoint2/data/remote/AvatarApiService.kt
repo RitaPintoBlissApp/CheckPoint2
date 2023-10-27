@@ -6,12 +6,17 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Path
 
 interface AvatarApiService{
     @GET("/users")
     //suspend fun getAvatar(): List<Avatar>
-    suspend fun getAvatar(): List<Map<String,Any>>
-    suspend fun searchAvatar(nome: String): List<Map<String,Any>>
+    suspend fun getAvatars(): List<Map<String,Any>> //GetAvatars
+
+    @GET("/users/{username}")
+    suspend fun searchAvatar(
+        @Path("username") name: String)
+    : Avatar
 }
 
 private val moshiAvatar = Moshi.Builder()

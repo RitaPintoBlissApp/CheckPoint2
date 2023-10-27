@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.checkpoint2.R
 import com.example.checkpoint2.data.model.Avatar
 import com.example.checkpoint2.data.remote.AvatarApi
 import kotlinx.coroutines.launch
@@ -19,7 +18,7 @@ class AvatarListViewModel : ViewModel() {
     fun getAvatar(){
         viewModelScope.launch {
             try{
-                val listResult = AvatarApi.retrofitAvatarService.getAvatar() // chamada à API, através do retrofit
+                val listResult = AvatarApi.retrofitAvatarService.getAvatars() // chamada à API, através do retrofit
                // val avatars = listResult.map { Avatar( name = it.name, id = it.id, avatarSrc = it.avatarSrc) }
                 val avatars = getValue(listResult)
                 _avatarList.postValue(avatars) //atualiza
