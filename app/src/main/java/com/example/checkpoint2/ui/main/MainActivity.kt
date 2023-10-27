@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity() {
             val sharedPreferences = getPreferences(Context.MODE_PRIVATE) //Obtém uma referência às preferências compartilhadas para armazenar dados localmente.
             val editor = sharedPreferences.edit()
 
-            editor.putString("avatarUrl", imgUrl)//Armazena a URL do avatar nas preferências compartilhadas.
+            editor.putString("avatarUrl", imgUrl )//Armazena a URL do avatar nas preferências compartilhadas.
             editor.apply()
 
             /*
