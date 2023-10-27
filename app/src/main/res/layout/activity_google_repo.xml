@@ -16,4 +16,13 @@
         android:layout_marginEnd="1dp"
         android:layout_marginBottom="0dp" />
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="16dp"
+        android:visibility="gone" />
+
 </RelativeLayout>

@@ -35,36 +35,6 @@
         tools:visibility="visible"
         />
 
-    <EditText
-        android:id="@+id/etTodoTitle"
-        android:layout_width="250dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="80dp"
-        android:autofillHints=""
-        android:hint="@string/enter_todo_title"
-        android:textColorHint="#5E220D"
-        app:layout_constraintBottom_toTopOf="@+id/btAvatarList"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btEmojiList"
-        app:layout_constraintVertical_bias="0.754"
-        android:inputType="" />
-
-    <Button
-        android:id="@+id/btSeartch"
-        style="@style/Widget.AppCompat.Button.Borderless.Colored"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="8dp"
-        android:contentDescription="@string/app_name"
-        app:icon="@android:drawable/ic_search_category_default"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/etTodoTitle"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.601"
-        />
-
     <Button
         android:id="@+id/btEmojiList"
         android:layout_width="155dp"
@@ -106,6 +76,28 @@
         />
 
 
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/textView"
+        android:layout_width="216dp"
+        android:layout_height="53dp"
+        android:layout_marginStart="88dp"
+        android:hint="search your github repo"
+        app:layout_constraintBottom_toTopOf="@+id/btAvatarList"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btEmojiList"
+        app:layout_constraintVertical_bias="0.7" />
+
+    <Button
+        android:id="@+id/btSeartch"
+        android:layout_width="62dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="16dp"
+        android:contentDescription="@string/app_name"
+        app:icon="@android:drawable/ic_search_category_default"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.613" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

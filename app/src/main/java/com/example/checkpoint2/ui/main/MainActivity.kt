@@ -1,10 +1,12 @@
 package com.example.checkpoint2.ui.main
 
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.net.toUri
@@ -26,30 +28,20 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private val viewModel: MainActivityViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        val apiService = retrofit.create(EmojiApiService::class.java)
-
         viewModel.getEmojis()
-
-        //viewModel.getEmoji()
 
 
         //change the emoji
         binding.btRandomEmoji.setOnClickListener {
-        /*
-        * checkpoint 1
-        *  btnChangeEmoji.setOnClickListener {
-            val randomIndex = (emojis.indices).random()
-            val randomemoji = emojis[randomIndex]
-            imgEmoji.setImageResource(randomemoji)
-        }
-        *
-*/          //fornecer a lista de emojis
+
+
+             //fornecer a lista de emojis
             //ir buscar o emoji a uma lista
             //colocar o emoji na imageview
 
@@ -70,6 +62,38 @@ class MainActivity : AppCompatActivity() {
             startActivity(navigateEmojiList)
         }
 
+        val textView = binding.textView
+        val imgUrlAvatar = binding.imageView
+
+        binding.btSeartch.setOnClickListener {
+
+            val textoDigitado =    textView.editableText.toString()
+            Log.d("TAG", "Texto digitado: $textoDigitado") //texto do user
+            // verificar se há algum nome ("login") assim na lista dos users
+            // se ouver tirar o ("avatar_ul") e colocar o msm na
+
+            viewModel.seartchAvatar(textoDigitado)
+
+            viewModel.avatarSearchResult.observe(this) { avatarList ->
+                if (avatarList != null && avatarList.isNotEmpty()) {
+                    val firstAvatar = avatarList.first()
+                    imgUrlAvatar.setImageURI(Uri.parse(firstAvatar.avatarSrc))
+
+                    // Salva a URL do avatar nas preferências compartilhadas para uso futuro.
+                    val sharedPreferences = getPreferences(Context.MODE_PRIVATE)
+                    val editor = sharedPreferences.edit()
+                    editor.putString("avatarUrl", firstAvatar.avatarSrc)
+                    editor.apply()
+                } else {
+
+                    // Se a lista de avatares estiver vazia, define uma imagem de erro no ImageView.
+                    imgUrlAvatar.setImageResource(R.drawable.error404)
+                    Log.v("TAG","ERRO404")
+                }
+
+        }
+
+
 
         //  navigate to the avatar list
         binding.btAvatarList.setOnClickListener {
@@ -86,4 +110,4 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-   }
+   }}

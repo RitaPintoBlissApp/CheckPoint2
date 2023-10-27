@@ -13,12 +13,22 @@ class RepoListViewModel(): ViewModel() {
 
     private var currentPage = 1
     private var currentLimit = 30
-
-    private var isLoading = false
+    private var updating = false
 
     private val _googleRepoList = MutableLiveData<List<GoogleRepo>>()
     val googleRepoList: LiveData<List<GoogleRepo>> get() = _googleRepoList
 
+    fun startUpdate(){
+        updating = true
+    }
+
+    fun finishUpdate(){
+        updating = false
+    }
+
+    fun isUpdating(): Boolean{
+        return updating
+    }
 
     fun getGoogleRepo(){
         viewModelScope.launch {
@@ -37,24 +47,29 @@ class RepoListViewModel(): ViewModel() {
 
     fun getNextGoogleRepos(){
 
+        if (updating ) {
+            Log.v("TAG", "is updating")
+        }
+        else {
+           startUpdate()
             viewModelScope.launch {
                 try{
-                    //dizer q estás a fazer update
-                    //variavel   diga se está a fazer ou n update
-                    isLoading = true
                     currentPage++ //incrementa a pagina
                     val listResult = GoogleRApi.GoogleRepoService.getGoogleRepo(limit = currentLimit, page = currentPage ) // chama a API
                     val repos = listResult.map { GoogleRepo(id = it.id, fullName = it.fullName, private = it.private) }
                     val currentList = _googleRepoList.value.orEmpty()
                     _googleRepoList.value = currentList + repos // Atualiza a lista atual com os novos repositórios
-
-
+                    finishUpdate()
                 }catch (e:Exception){
-                    Log.e("APIError", e.toString())
+                    Log.v("TAG", "Exception")
+                    finishUpdate()
 
                 }
 
             }
+
+        }
+
     }
 }
 

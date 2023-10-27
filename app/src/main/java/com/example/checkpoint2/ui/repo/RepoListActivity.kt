@@ -1,6 +1,8 @@
 package com.example.checkpoint2.ui.repo
 
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,6 +27,8 @@ class RepoListActivity : AppCompatActivity(){
 
         binding.rvGoogleRepos.layoutManager =  LinearLayoutManager(this)
 
+        val progressBar = binding.progressBar
+
         val reposLayoutManager = binding.rvGoogleRepos.layoutManager as LinearLayoutManager
 
         binding.rvGoogleRepos.adapter = adapter
@@ -33,15 +37,26 @@ class RepoListActivity : AppCompatActivity(){
            adapter.updateItem(list)
         }
 
+        progressBar.visibility = View.VISIBLE // Antes de iniciar a carga
+
+        viewModel.googleRepoList.observe(this) { list ->
+            adapter.updateItem(list)
+            progressBar.visibility = View.GONE // Após a carga
+        }
+
         viewModel.getGoogleRepo()
 
         //importante
         //deteta o scroll feito (com o listener de scroll) e quando chega ao fim da pagina
         //carrega mais items para o final da lista para continuar o scroll
+
         binding.rvGoogleRepos.addOnScrollListener(object : RecyclerView.OnScrollListener(){
              private fun update(){
-                 viewModel.getNextGoogleRepos()
-                 //para de acrescentar
+                 if (!viewModel.isUpdating()) {
+                     viewModel.getNextGoogleRepos()
+                     //para de acrescentar
+                     Log.v("TAG", "HEELOO")
+                 }
              }
 
             //verifica se chegou ao fim da lista
@@ -51,6 +66,7 @@ class RepoListActivity : AppCompatActivity(){
                 val lastVisibleItemIndex :Int = reposLayoutManager.findLastVisibleItemPosition()
                 if(lastVisibleItemIndex == totalItemCount-1){ // é o ultimo item?
                     update() //acrescenta mais
+                    Log.v("TAG","$totalItemCount")
                 }
             }
         })

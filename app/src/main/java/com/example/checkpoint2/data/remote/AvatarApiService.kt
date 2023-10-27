@@ -11,6 +11,7 @@ interface AvatarApiService{
     @GET("/users")
     //suspend fun getAvatar(): List<Avatar>
     suspend fun getAvatar(): List<Map<String,Any>>
+    suspend fun searchAvatar(nome: String): List<Map<String,Any>>
 }
 
 private val moshiAvatar = Moshi.Builder()

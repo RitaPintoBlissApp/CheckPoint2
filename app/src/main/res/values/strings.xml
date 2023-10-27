@@ -2,7 +2,7 @@
     <string name="app_name">CheckPoint2</string>
     <string name="google_repos"> GOOGLE REPS</string>
     <string name="random_emoji">GET EMOJI</string>
-    <string name="enter_todo_title">Enter Todo Title</string>
+    <string name="enter_todo_title">User name </string>
     <string name="emojilist">EMOJI LIST</string>
     <string name="avatar_list">AVATAR LIST</string>
     <string name="todo">TODO</string>
