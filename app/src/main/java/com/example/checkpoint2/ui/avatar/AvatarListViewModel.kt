@@ -1,5 +1,6 @@
 package com.example.checkpoint2.ui.avatar
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,21 +12,31 @@ import kotlinx.coroutines.launch
 
 class AvatarListViewModel : ViewModel() {
 
+
     private val _avatarList = MutableLiveData<List<Avatar>>()
+    val avatarList: LiveData<List<Avatar>> get() = _avatarList
+    private val PREFS_FILEAVATAR = "avatarprefs"
 
-    val avatarList:LiveData<List<Avatar>> get() = _avatarList //para leitura externa e representação dos avatares
+    fun getAvatarFromPrefs(context: Context) {
+        Log.d("TAG", "getAvatarFromPrefs foi chamado")
+        val prefs = context.getSharedPreferences(PREFS_FILEAVATAR, Context.MODE_PRIVATE)
+        val savedURL = prefs.getString("avatarUrl", null)
 
-    fun getAvatar(){
-        viewModelScope.launch {
-            try{
-                val listResult = AvatarApi.retrofitAvatarService.getAvatars() // chamada à API, através do retrofit
-               // val avatars = listResult.map { Avatar( name = it.name, id = it.id, avatarSrc = it.avatarSrc) }
-                val avatars = getValue(listResult)
-                _avatarList.postValue(avatars) //atualiza
-            }catch (e:Exception){
-                Log.e("APIError", e.toString())
-                _avatarList.postValue(emptyList())
-            }
+        if (savedURL != null) {
+            Log.d("TAG", "URL : $savedURL")
+
+            // Se a URL estiver salva nas SharedPreferences, cria um Avatar com essa URL
+            val avatar =  Avatar(name = "", id = 0.0, avatarSrc = savedURL)
+
+            val currentList = _avatarList.value?.toMutableList() ?: mutableListOf()
+            currentList.add(avatar)
+            _avatarList.postValue(currentList)
+
+
+        } else {
+            Log.d("TAG", "No URL found")
+            // Se a URL não estiver salva, posta uma lista vazia
+            _avatarList.postValue(emptyList())
         }
     }
 
