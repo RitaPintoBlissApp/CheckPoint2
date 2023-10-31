@@ -5,32 +5,31 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.checkpoint2.data.model.Avatar
-import com.example.checkpoint2.data.remote.AvatarApi
-import kotlinx.coroutines.launch
 
 class AvatarListViewModel : ViewModel() {
 
 
-    private val _avatarList = MutableLiveData<List<Avatar>>()
-    val avatarList: LiveData<List<Avatar>> get() = _avatarList
+    private val _avatarList = MutableLiveData<List<Avatar>?>()
+    val avatarList: MutableLiveData<List<Avatar>?> get() = _avatarList
     private val PREFS_FILEAVATAR = "avatarprefs"
 
     fun getAvatarFromPrefs(context: Context) {
         Log.d("TAG", "getAvatarFromPrefs foi chamado")
         val prefs = context.getSharedPreferences(PREFS_FILEAVATAR, Context.MODE_PRIVATE)
-        val savedURL = prefs.getString("avatarUrl", null)
+        val savedList = prefs.getString("avatarUrls", null)?.trim(',')
 
-        if (savedURL != null) {
-            Log.d("TAG", "URL : $savedURL")
 
-            // Se a URL estiver salva nas SharedPreferences, cria um Avatar com essa URL
-            val avatar =  Avatar(name = "", id = 0.0, avatarSrc = savedURL)
+        if (savedList != null) {
+            Log.d("TAG", "Lista de URLs: $savedList")
+            // Cria uma lista de dos URLs
+            val avatarUrls = savedList.split(",").toList()
 
-            val currentList = _avatarList.value?.toMutableList() ?: mutableListOf()
-            currentList.add(avatar)
-            _avatarList.postValue(currentList)
+            // Cria uma lista de avatares a partir dos URLs
+            val avatarList = avatarUrls.map { Avatar(name = "", id = 0.0, avatarSrc = it) }
+
+            // Atualiza a lista no ViewModel
+            _avatarList.postValue(avatarList)
 
 
         } else {
@@ -40,13 +39,28 @@ class AvatarListViewModel : ViewModel() {
         }
     }
 
-    fun removeAvatar(position:Int){
-        _avatarList.value?.toMutableList()?.let { avatars ->
-            avatars.removeAt(position) // remove o avatar da lista 'avatars'
-            _avatarList.postValue(avatars) // atualiza a livedata
+
+
+
+    fun removeAvatar(position: Int, context: Context) {
+        val avatarList = _avatarList.value?.toMutableList()
+
+        if (avatarList != null && position >= 0 && position < avatarList.size) {
+            avatarList.removeAt(position)
+            _avatarList.postValue(avatarList)
+
+            val avatarUrls = avatarList.map { it.avatarSrc }
+            saveAvatarUrlsToPrefs(avatarUrls, context)
         }
     }
 
+    private fun saveAvatarUrlsToPrefs(avatarUrls: List<String>, context: Context) {
+        val sharedPreferences = context.getSharedPreferences(PREFS_FILEAVATAR, Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        val serializedList = avatarUrls.joinToString(separator = ",")
+        editor.putString("avatarUrls", serializedList.trim(','))
+        editor.apply()
+    }
     fun getValue( mapaV: List<Map< String, Any>>): List<Avatar>{
         var user=""
         var id: Double = 0.0

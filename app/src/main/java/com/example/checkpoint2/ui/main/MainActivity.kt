@@ -61,10 +61,25 @@ class MainActivity : AppCompatActivity() {
             val imgUri = imgUrl?.toUri()?.buildUpon()?.scheme("https")?.build()
             binding.imageView.load(imgUri){}
 
-            val sharedPreferences = getSharedPreferences(PREFS_FILEAVATAR,Context.MODE_PRIVATE) //Obtém uma referência às preferências compartilhadas para armazenar dados localmente
+
+            val sharedPreferences = this.getSharedPreferences(PREFS_FILEAVATAR,Context.MODE_PRIVATE) //Obtém uma referência às preferências compartilhadas para armazenar dados localmente
             val editor = sharedPreferences.edit()
-            editor.putString("avatarUrl", imgUrl )//Armazena a URL do avatar nas preferências compartilhadas.
+            //Recupera a lista existente de avatares ou cria uma nova lista vazia
+            val avatarUrls = sharedPreferences.getString("avatarUrls", null)?.split(",")?.toMutableList() ?: mutableListOf()
+
+            // Adiciona a nova URL à lista
+            if(!avatarUrls.contains(imgUrl)){
+                if (imgUrl != null) {
+                    avatarUrls.add(imgUrl)
+                }
+            }
+            // Serializa a lista para uma string e a salva nas SharedPreferences
+            val serializedList = avatarUrls.joinToString(separator = ",")
+            editor.putString("avatarUrls", serializedList.trim(','))
             editor.apply()
+
+            Log.v("TAG","$avatarUrls/n")
+
 
         }
 

@@ -1,9 +1,7 @@
 package com.example.checkpoint2.ui.avatar
 
-import android.content.Context
-import android.content.SharedPreferences
+
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.checkpoint2.databinding.ActivityAvatarListBinding
@@ -19,7 +17,7 @@ class AvatarListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         var adapter = AvatarAdapter{ position ->
-            viewModel.removeAvatar(position)
+            viewModel.removeAvatar(position,this)
         }
 
         binding = ActivityAvatarListBinding.inflate(layoutInflater)
