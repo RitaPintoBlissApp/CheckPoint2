@@ -2,7 +2,6 @@ package com.example.checkpoint2.ui.avatar
 
 import android.content.Context
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.checkpoint2.data.model.Avatar
@@ -12,11 +11,11 @@ class AvatarListViewModel : ViewModel() {
 
     private val _avatarList = MutableLiveData<List<Avatar>?>()
     val avatarList: MutableLiveData<List<Avatar>?> get() = _avatarList
-    private val PREFS_FILEAVATAR = "avatarprefs"
+    private val prefsFileAvatar_ = "avatarprefs"
 
     fun getAvatarFromPrefs(context: Context) {
         Log.d("TAG", "getAvatarFromPrefs foi chamado")
-        val prefs = context.getSharedPreferences(PREFS_FILEAVATAR, Context.MODE_PRIVATE)
+        val prefs = context.getSharedPreferences(prefsFileAvatar_, Context.MODE_PRIVATE)
         val savedList = prefs.getString("avatarUrls", null)?.trim(',')
 
 
@@ -55,8 +54,8 @@ class AvatarListViewModel : ViewModel() {
     }
 
     private fun saveAvatarUrlsToPrefs(avatarUrls: List<String>, context: Context) {
-        val sharedPreferences = context.getSharedPreferences(PREFS_FILEAVATAR, Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
+        val sharedPreferences = context.getSharedPreferences(prefsFileAvatar_, Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit() //Cria um editor para realizar as modificações nas preferências compartilhadas
         val serializedList = avatarUrls.joinToString(separator = ",")
         editor.putString("avatarUrls", serializedList.trim(','))
         editor.apply()
@@ -65,9 +64,9 @@ class AvatarListViewModel : ViewModel() {
         var user=""
         var id: Double = 0.0
         var url = ""
-        var listaauxiliar = mutableListOf<Avatar>()
-        mapaV.forEach(){
-            it.forEach(){
+        val listaauxiliar = mutableListOf<Avatar>()
+        mapaV.forEach(){ it ->
+            it.forEach(){ it ->
                 when (it.key) {
                     "name" -> {user = it.value as String}
                     "id" -> {id = it.value as Double}

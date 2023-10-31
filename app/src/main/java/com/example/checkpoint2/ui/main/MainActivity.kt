@@ -28,59 +28,62 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         viewModel.getEmojis()
+        val sharedPreferences = this.getSharedPreferences(PREFS_FILEAVATAR, Context.MODE_PRIVATE) //Obtém uma referência às preferências compartilhadas para armazenar dados localmente
+        val editor = sharedPreferences.edit()
 
-        binding.btRandomEmoji.setOnClickListener {
-             //fornecer a lista de emojis
-            //ir buscar o emoji a uma lista
-            //colocar o emoji na imageview
+        val saveEmoji = sharedPreferences.getString("latestEmoji", null)
+        val saveAvatar = sharedPreferences.getString("latestAvatar", null)
 
-            viewModel.getEmoji()
 
-            val imgUrl = viewModel.emoji.value?.imgSrc
-
-            val imgUri = imgUrl?.toUri()?.buildUpon()?.scheme("https")?.build()
-            binding.imageView.load(imgUri){}
+        viewModel.emoji.observe(this) { updateEmoji ->
+            if (updateEmoji != null) {
+                binding.imageView.load(updateEmoji.imgSrc.toUri().buildUpon().scheme("https").build()) {}
+            }
+            if (updateEmoji != null) {
+                editor.putString("latestEmoji", updateEmoji.imgSrc).apply()
+            }
+            editor.remove("latestAvatar").apply()
         }
 
+        binding.btRandomEmoji.setOnClickListener { viewModel.getEmoji() }
 
-        binding.btEmojiList.setOnClickListener {
-            val navigateEmojiList = Intent(this,EmojiListActivity::class.java)
-            startActivity(navigateEmojiList)
-        }
+        viewModel.avatar.observe(this) { updateAvatar ->
+            if (updateAvatar != null) {
+                binding.imageView.load(updateAvatar.avatarSrc.toUri().buildUpon().scheme("https").build()) {}
+            }
 
-         val textView = binding.textView
-        binding.btSeartch.setOnClickListener {
+            val imgUrl = updateAvatar?.avatarSrc
 
-            val textoDigitado =    textView.editableText.toString()
-            Log.d("TAG", "Texto digitado: $textoDigitado")
-
-            viewModel.seartchAvatar(textoDigitado) { Toast.makeText(this, it, Toast.LENGTH_SHORT).show() }
-
-            val imgUrl = viewModel.avatar.value?.avatarSrc
-
-            val imgUri = imgUrl?.toUri()?.buildUpon()?.scheme("https")?.build()
-            binding.imageView.load(imgUri){}
-
-
-            val sharedPreferences = this.getSharedPreferences(PREFS_FILEAVATAR,Context.MODE_PRIVATE) //Obtém uma referência às preferências compartilhadas para armazenar dados localmente
-            val editor = sharedPreferences.edit()
             //Recupera a lista existente de avatares ou cria uma nova lista vazia
-            val avatarUrls = sharedPreferences.getString("avatarUrls", null)?.split(",")?.toMutableList() ?: mutableListOf()
+            val avatarUrls = sharedPreferences.getString("avatarUrls", null)?.split(",")?.toMutableList()
+                ?: mutableListOf()
 
             // Adiciona a nova URL à lista
-            if(!avatarUrls.contains(imgUrl)){
+            if (!avatarUrls.contains(imgUrl)) {
                 if (imgUrl != null) {
                     avatarUrls.add(imgUrl)
                 }
             }
             // Serializa a lista para uma string e a salva nas SharedPreferences
             val serializedList = avatarUrls.joinToString(separator = ",")
-            editor.putString("avatarUrls", serializedList.trim(','))
-            editor.apply()
+            editor.putString("avatarUrls", serializedList.trim(',')).apply()
 
-            Log.v("TAG","$avatarUrls/n")
+            Log.v("TAG", "$avatarUrls/n")
+            editor.putString("latestAvatar", imgUrl).apply()
+            editor.remove("latestEmoji").apply()
+        }
 
+        binding.btEmojiList.setOnClickListener {
+            val navigateEmojiList = Intent(this, EmojiListActivity::class.java)
+            startActivity(navigateEmojiList)
+        }
 
+        val textView = binding.textView
+        binding.btSearch.setOnClickListener {
+            val textoDigitado = textView.editableText.toString()
+            Log.d("TAG", "Texto digitado: $textoDigitado")
+
+            viewModel.searchAvatar(textoDigitado) { Toast.makeText(this, it, Toast.LENGTH_SHORT).show() }
         }
 
         binding.btAvatarList.setOnClickListener {
@@ -89,8 +92,14 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btGoogleRepos.setOnClickListener {
-            val navigateGoogleRepActivity = Intent(this,RepoListActivity::class.java)
+            val navigateGoogleRepActivity = Intent(this, RepoListActivity::class.java)
             startActivity(navigateGoogleRepActivity)
+        }
+
+        if (saveEmoji != null || saveAvatar != null) {
+            viewModel.initializeImageView(saveEmoji, saveAvatar)
+        } else {
+            viewModel.initializeImageView(null, null)
         }
     }
 }

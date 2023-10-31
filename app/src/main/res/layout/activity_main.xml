@@ -88,7 +88,7 @@
         app:layout_constraintVertical_bias="0.7" />
 
     <Button
-        android:id="@+id/btSeartch"
+        android:id="@+id/bt_search"
         android:layout_width="62dp"
         android:layout_height="48dp"
         android:layout_marginEnd="16dp"
