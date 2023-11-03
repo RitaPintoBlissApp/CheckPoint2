@@ -31,13 +31,5 @@ class AvatarListActivity : AppCompatActivity() {
             adapter.updateItem(list)
         }
         viewModel.getAvatarFromPrefs(this)
-
-       // val prefs:SharedPreferences = getSharedPreferences(PREFS_FILEAVATAR, Context.MODE_PRIVATE)
-        //val savedURL = prefs.getString("avatarUrl","N/A") ?: "N/A"
-
-        //Log.d("TAG", "Texto digitado avatar list: $savedURL")
-
-        // Atualize a lista do Adapter com os dados carregados
-        //adapter.updateItem(listOf(savedURL))
     }
 }

@@ -27,26 +27,37 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         viewModel.getEmojis()
+
         val sharedPreferences = this.getSharedPreferences(PREFS_FILEAVATAR, Context.MODE_PRIVATE) //Obtém uma referência às preferências compartilhadas para armazenar dados localmente
         val editor = sharedPreferences.edit()
 
-        val saveEmoji = sharedPreferences.getString("latestEmoji", null)
-        val saveAvatar = sharedPreferences.getString("latestAvatar", null)
+        val urlEmoji = sharedPreferences.getString("latestEmoji", null)
+        val urlAvatar = sharedPreferences.getString("latestAvatar", null)
 
+        Log.v("TAG","saved avatar: $urlAvatar")
+        Log.v("TAG","saved emoji: $urlEmoji")
 
+        //se houver dados vão ser inicializados
+        if (urlEmoji != null || urlAvatar != null) {
+            viewModel.initializeImageView(urlEmoji, urlAvatar)
+        } else {
+            viewModel.initializeImageView(null, null)
+            Log.v("TAG", "Não há dados")
+        }
+
+        // Observa mudanças no emoji e atualiza a ImageView se um novo emoji for recebido
         viewModel.emoji.observe(this) { updateEmoji ->
             if (updateEmoji != null) {
-                binding.imageView.load(updateEmoji.imgSrc.toUri().buildUpon().scheme("https").build()) {}
-            }
-            if (updateEmoji != null) {
-                editor.putString("latestEmoji", updateEmoji.imgSrc).apply()
+                Log.v("TAG", "Emoji src: ${updateEmoji.imgSrc}")
+                binding.imageView.load(updateEmoji.imgSrc.toUri().buildUpon().scheme("https").build()) {} //carrega a imagem
+                editor.putString("latestEmoji", updateEmoji.imgSrc).apply() //Salva a última URL do emoji nas preferências compartilhadas
             }
             editor.remove("latestAvatar").apply()
         }
 
-        binding.btRandomEmoji.setOnClickListener { viewModel.getEmoji() }
-
+        // Observa mudanças no avatar e atualiza a ImageView se um novo avatar for recebido
         viewModel.avatar.observe(this) { updateAvatar ->
             if (updateAvatar != null) {
                 binding.imageView.load(updateAvatar.avatarSrc.toUri().buildUpon().scheme("https").build()) {}
@@ -67,11 +78,16 @@ class MainActivity : AppCompatActivity() {
             // Serializa a lista para uma string e a salva nas SharedPreferences
             val serializedList = avatarUrls.joinToString(separator = ",")
             editor.putString("avatarUrls", serializedList.trim(',')).apply()
+            Log.v("TAG", "$avatarUrls\n")
 
-            Log.v("TAG", "$avatarUrls/n")
             editor.putString("latestAvatar", imgUrl).apply()
             editor.remove("latestEmoji").apply()
         }
+
+
+
+        binding.btRandomEmoji.setOnClickListener {
+            viewModel.getEmoji()}
 
         binding.btEmojiList.setOnClickListener {
             val navigateEmojiList = Intent(this, EmojiListActivity::class.java)
@@ -94,12 +110,6 @@ class MainActivity : AppCompatActivity() {
         binding.btGoogleRepos.setOnClickListener {
             val navigateGoogleRepActivity = Intent(this, RepoListActivity::class.java)
             startActivity(navigateGoogleRepActivity)
-        }
-
-        if (saveEmoji != null || saveAvatar != null) {
-            viewModel.initializeImageView(saveEmoji, saveAvatar)
-        } else {
-            viewModel.initializeImageView(null, null)
         }
     }
 }

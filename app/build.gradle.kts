@@ -2,7 +2,6 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
 
-
 }
 
 android {
@@ -89,7 +88,8 @@ dependencies {
 
     implementation ("androidx.paging:paging-runtime:3.0.0")
 
+    implementation ("com.google.code.gson:gson:2.8.8")
 
-
+   
 
 }

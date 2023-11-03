@@ -10,8 +10,13 @@ import com.example.checkpoint2.data.model.Emoji
 import com.example.checkpoint2.data.remote.AvatarApi
 import com.example.checkpoint2.data.remote.EmojiApi
 import kotlinx.coroutines.launch
+import kotlin.math.log
 
 class MainActivityViewModel : ViewModel() {
+
+    // LiveData para o emoji e avatar
+    /* LiveData conta com reconhecimento de ciclo de vida, ou seja,
+     ele respeita o ciclo de vida de outros componentes do app*/
 
     private val _emojiList = MutableLiveData<List<Emoji>>()
     private val _emoji = MutableLiveData<Emoji?>()
@@ -21,7 +26,17 @@ class MainActivityViewModel : ViewModel() {
   private val _avatar = MutableLiveData<Avatar?>()
     val avatar: LiveData<Avatar?> get() = _avatar
 
+    fun initializeImageView(urlEmoji: String?, urlAvatar: String?) {
+        Log.v("TAG", "Inicio da inicialização")
+        if (urlAvatar != null ) {
+            _avatar.setValue(Avatar(name = "", id = 0.0, avatarSrc = urlAvatar))
+            _emoji.setValue(null)
 
+        } else if (urlEmoji!= null) {
+            _emoji.setValue(Emoji(name = "", imgSrc = urlEmoji))
+            _avatar.setValue(null)
+        }
+    }
 
     fun getEmojis() {
         viewModelScope.launch {
@@ -34,8 +49,8 @@ class MainActivityViewModel : ViewModel() {
                         imgSrc = it.value
                     )
                 } // Mapeia para List<Emoji>
-                _emojiList.postValue(emoji)  // Atualizar UI
-                _emoji.postValue(emoji.random())
+                _emojiList.setValue(emoji)  // Atualizar UI
+               // _emoji.postValue(emoji.random())
 
             } catch (e: Exception) {
                 Log.e("TAG", e.toString())// Lida com os erros
@@ -47,7 +62,7 @@ class MainActivityViewModel : ViewModel() {
         _emojiList.value?.let { emojis ->
             if (emojis.isNotEmpty()) {
                 val randomIndex = (0 until emojis.size).random()
-                _emoji.postValue(emojis[randomIndex])
+                _emoji.value = emojis[randomIndex]
             }
         }
     }
@@ -68,22 +83,8 @@ class MainActivityViewModel : ViewModel() {
         }
     }
 
-    fun initializeImageView(emoji: String?, avatar: String?) {
-        if (avatar != null && emoji == null) {
-            val avatarList = listOf(Avatar(name = "", id = 0.0, avatarSrc = avatar))
-            _avatar.postValue(avatarList.first())
-            _emoji.postValue(null)
 
-        } else if (emoji != null && avatar == null) {
-            _emojiList.value?.let { emojis ->
-                if (emojis.isNotEmpty()) {
-                    val randomIndex = (0 until emojis.size).random()
-                    _emoji.postValue(emojis[randomIndex])
-                }
-            }
-            _avatar.postValue(null)
-        }
-    }
+
 
 }
 
