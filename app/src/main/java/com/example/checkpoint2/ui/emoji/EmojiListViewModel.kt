@@ -44,7 +44,7 @@ class EmojiListViewModel() : ViewModel() {
         if (cachedEmojis != null) {
             _emojiList.value = cachedEmojis
         } else {
-            getEmojisFromApi(context)
+              getEmojisFromApi(context)
         }
     }
 
