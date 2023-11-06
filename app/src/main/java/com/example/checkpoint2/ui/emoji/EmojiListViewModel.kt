@@ -9,7 +9,11 @@ import com.example.checkpoint2.data.model.Emoji
 import com.example.checkpoint2.data.remote.EmojiApi
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
 import kotlinx.coroutines.launch
+
+//import kotlinx.serialization.json.Json
+//import kotlinx.serialization.*
 
 
 class EmojiListViewModel() : ViewModel() {
@@ -34,7 +38,7 @@ class EmojiListViewModel() : ViewModel() {
 
     //Desafio 2/11
     //vai buscar os dados guardados
-    //de houver dados na cache top
+    //de houver dados na cache top usas esses dados
     //se não houver vais buscar á API
 
     //Alternativas ao Gson
@@ -48,50 +52,58 @@ class EmojiListViewModel() : ViewModel() {
         }
     }
 
-    fun getCahedEmojis(context: Context): Emoji? {
+    fun getCahedEmojis(context: Context): List<Emoji> {
         val sharedPreferences = context.getSharedPreferences("emoji_cache", Context.MODE_PRIVATE)
         val emojisSaved = sharedPreferences.getString("emojis", null)
         Log.v("TAG", "emojis saved = $emojisSaved")
 
-        return emojisSaved?.let {//se emojisSaved n for nulo
+        return emojisSaved?.let {//.let -> executa apenas se emojisSaved n for nulo
             //vamos "converter" JSON para uma lista de emojis com o Gson
             //val emojis = Gson().fromJson(it, Array<Emoji>::class.java).toList()
             //emojis
 
             val moshi: Moshi = Moshi.Builder().build()
-            val jsonAdapter: JsonAdapter<Emoji> = moshi.adapter<Emoji>(
-                Emoji::class.java
-            )
+            //criamos um adaptador JSON específico para a classe Emoji, que indica ao Moshi como converter objetos dessa classe para JSON e vice-versa
+            val jsonAdapter: JsonAdapter<List<Emoji>> = moshi.adapter<List<Emoji>>(Types.newParameterizedType(List::class.java, Emoji::class.java))
 
-            val blackjackHand = jsonAdapter.fromJson(it)
-            println(blackjackHand)
-            blackjackHand
+            // usamos o adaptador para desserializar a string JSON (it) em um objeto Emoji.
+            val emoji = jsonAdapter.fromJson(it) ?: emptyList()
 
-            //desserialização
-        }
+            // imprimimos o objeto desserializado.
+            println(emoji)
+
+            //retorna o objeto Emoji desserializado
+           emoji
+
+        } ?: emptyList()
     }
 
 
-    private fun saveEmojisToCache(context: Context, emoji: Emoji) {
+    private fun saveEmojisToCache(context: Context, emojis: List<Emoji>) {
+        // Obtém a referência para o SharedPreferences com o nome "emoji_cache"
         val sharedPreferences = context.getSharedPreferences("emoji_cache", Context.MODE_PRIVATE)
+
+        // editor para modificar o SharedPreferences
         val editor = sharedPreferences.edit()
 
+        // Converte o objeto Emoji para uma string JSON
         val moshi: Moshi = Moshi.Builder().build()
-        val jsonAdapter: JsonAdapter<Emoji> = moshi.adapter<Emoji>(
-            Emoji::class.java
-        )
+        val jsonAdapter: JsonAdapter<List<Emoji>> = moshi.adapter<List<Emoji>>(
+            Types.newParameterizedType(List::class.java,  Emoji::class.java))
 
+        val emojisJson = jsonAdapter.toJson(emojis) ?: "[]" //converte para json ou usa uma lista vazia se a conversão falhar
+        Log.v("TAG", "emoji passed to Json = $emojisJson")
 
-        val emojiJson = jsonAdapter.toJson() //converte para json
-        Log.v("TAG", "emoji saved = $emojiJson")
-
-        editor.putString(
-            "emojis",
-            emojiJson
-        ) //guarda string JSON no SharedPreferences com a chave "emojis".
+        //guarda string JSON no SharedPreferences com a chave "emojis".
+        editor.putString("emojis", emojisJson)
         editor.apply()
         //serialização
     }
+
+    /*
+    *   Types.newParameterizedType(//cria um tipo de parâmetro usando as classes fornecidas.
+        List::class.java, //Obtém a representação da classe List em Java. List é uma interface genérica, mas aqui é usada sem parâmetros de tipo, para representar uma lista sem tipo específico.
+        Emoji::class.java) //Obtém a representação da classe Emoji em Java*/
 
 
     fun getEmojisFromApi(context: Context) {
@@ -99,19 +111,13 @@ class EmojiListViewModel() : ViewModel() {
             try {
                 // Chamar a API para obter os emojis
                 val apiResult = EmojiApi.retrofitService.getEmojis()
-                val emojis = apiResult.map {
-                    Emoji(
-                        name = it.key,
-                        imgSrc = it.value
-                    )
-                } //mapeia os dados da api para obetos emojis
-                _emojiList.postValue(emojis)
+                val emojis = apiResult.map { Emoji(name = it.key, imgSrc = it.value) } //mapeia os dados da api para obetos emojis
+                _emojiList.postValue(emojis) // atualiza a LiveData
 
                 // Salvar os emojis no cache
                 saveEmojisToCache(context, emojis)
             } catch (e: Exception) {
-
-                Log.e("APIError", e.toString())
+                Log.v("TAG", e.toString())
             }
         }
     }
