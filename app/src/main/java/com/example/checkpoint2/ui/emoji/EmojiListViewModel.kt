@@ -36,10 +36,6 @@ class EmojiListViewModel() : ViewModel() {
             }
         }*/
 
-    //Desafio 2/11
-    //vai buscar os dados guardados
-    //de houver dados na cache top usas esses dados
-    //se não houver vais buscar á API
 
     //Alternativas ao Gson
     fun getEmojisFromCacheOrAPI(context: Context) {
@@ -48,16 +44,16 @@ class EmojiListViewModel() : ViewModel() {
         if (cachedEmojis != null) {
             _emojiList.value = cachedEmojis
         } else {
-              getEmojisFromApi(context)
+            getEmojisFromApi(context)
         }
     }
 
-    fun getCahedEmojis(context: Context): List<Emoji> {
+    private fun getCahedEmojis(context: Context): List<Emoji> {
         val sharedPreferences = context.getSharedPreferences("emoji_cache", Context.MODE_PRIVATE)
-        val emojisSaved = sharedPreferences.getString("emojis", null)
-        Log.v("TAG", "emojis saved = $emojisSaved")
+        val emojiSaved = sharedPreferences.getString("emoji", null)
+        Log.v("TAG", "emojis saved = $emojiSaved")
 
-        return emojisSaved?.let {//.let -> executa apenas se emojisSaved n for nulo
+        return emojiSaved?.let {//.let -> executa apenas se emojisSaved n for nulo
             //vamos "converter" JSON para uma lista de emojis com o Gson
             //val emojis = Gson().fromJson(it, Array<Emoji>::class.java).toList()
             //emojis
@@ -116,6 +112,7 @@ class EmojiListViewModel() : ViewModel() {
 
                 // Salvar os emojis no cache
                 saveEmojisToCache(context, emojis)
+
             } catch (e: Exception) {
                 Log.v("TAG", e.toString())
             }
