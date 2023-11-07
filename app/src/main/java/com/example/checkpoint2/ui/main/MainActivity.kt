@@ -39,15 +39,12 @@ class MainActivity : AppCompatActivity() {
         Log.v("TAG","saved avatar: $urlAvatar")
         Log.v("TAG","saved emoji: $urlEmoji")
 
-        //se houver dados vão ser inicializados
-        if (urlEmoji != null || urlAvatar != null) {
-            viewModel.initializeImageView(urlEmoji, urlAvatar)
-        } else {
-            viewModel.initializeImageView(null, null)
-            Log.v("TAG", "Não há dados")
-        }
+        //se houver dados, vão ser inicializados
 
-        // Observa mudanças no emoji e atualiza a ImageView se um novo emoji for recebido
+            viewModel.initializeImageView(urlEmoji, urlAvatar)
+
+
+        // Observe mudanças no emoji e atualiza a ImageView se um novo emoji for recebido
         viewModel.emoji.observe(this) { updateEmoji ->
             if (updateEmoji != null) {
                 Log.v("TAG", "Emoji src: ${updateEmoji.imgSrc}")

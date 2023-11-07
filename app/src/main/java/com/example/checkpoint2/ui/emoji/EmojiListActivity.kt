@@ -30,7 +30,7 @@ class EmojiListActivity : AppCompatActivity(){
 
         //listener
         binding.swipeRefreshLayout.setOnRefreshListener {
-            viewModel.getEmojisFromApi(this)
+            viewModel.getEmojis()
         }
         //observer para todas as mudanças da lista + atualizações
         viewModel.emojiList.observe(this) { list ->
@@ -43,7 +43,7 @@ class EmojiListActivity : AppCompatActivity(){
 
 
          //viewModel.getEmojis()
-        viewModel.getEmojisFromCacheOrAPI(this)
+        viewModel.getEmojis()
 
 
 
