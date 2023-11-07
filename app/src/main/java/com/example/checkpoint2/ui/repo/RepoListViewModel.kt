@@ -1,12 +1,17 @@
 package com.example.checkpoint2.ui.repo
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.checkpoint2.data.model.Emoji
 import com.example.checkpoint2.data.model.GoogleRepo
 import com.example.checkpoint2.data.remote.GoogleRApi
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
 import kotlinx.coroutines.launch
 
 class RepoListViewModel(): ViewModel() {
@@ -75,9 +80,36 @@ class RepoListViewModel(): ViewModel() {
 
 
 
-
+//TODO
 /*
+
  val listData = Pager(PagingConfig(pageSize = 1)){
         GoogleRepoSource(apiservice)
     }.flow.cachedIn(viewModelScope)
     */
+
+/*
+fun getGoogleReposFromCacheOrAPI(context: Context){
+    val cachedGoogleRepos = getCachedGoogleRepos(context)
+    Log.v("TAG","cachedGoogleRepos = $cachedGoogleRepos")
+
+}
+
+
+private fun getCachedGoogleRepos(context: Context): List<GoogleRepo>{
+
+    val sharedPreferences = context.getSharedPreferences("googleRepo_cache", Context.MODE_PRIVATE)
+
+    val googleRepoSaved = sharedPreferences.getString("googleRespo", null)
+
+    return googleRepoSaved?.let {
+        val moshi: Moshi = Moshi.Builder().build()
+        val jsonAdapter: JsonAdapter<List<GoogleRepo>> = moshi.adapter<List<GoogleRepo>>(Types.newParameterizedType(List::class.java, GoogleRepo::class.java))
+
+        val googleRepo = jsonAdapter.fromJson(it) ?: emptyList()
+
+        println(googleRepo)
+        googleRepo
+    } ?: emptyList()
+}
+*/
