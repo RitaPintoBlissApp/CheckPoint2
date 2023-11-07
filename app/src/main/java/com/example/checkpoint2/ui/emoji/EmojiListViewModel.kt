@@ -10,6 +10,7 @@ import com.example.checkpoint2.data.remote.EmojiApi
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.launch
 
 //import kotlinx.serialization.json.Json
@@ -21,7 +22,10 @@ class EmojiListViewModel() : ViewModel() {
     private val _emojiList = MutableLiveData<List<Emoji>?>() //lista de emojis
     val emojiList: MutableLiveData<List<Emoji>?> get() = _emojiList
 
-    /*
+
+
+
+
          fun getEmojis() {
             viewModelScope.launch {
                 try {
@@ -34,12 +38,16 @@ class EmojiListViewModel() : ViewModel() {
                     Log.e("APIError", e.toString())// Lida com os erros
                 }
             }
-        }*/
+        }
 
-
+    //TODO
+    //vai buscar os dados guardados
+    //de houver dados na cache top
+    //se não houver vais buscar á API
+/*
     //Alternativas ao Gson
     fun getEmojisFromCacheOrAPI(context: Context) {
-        val cachedEmojis = getCahedEmojis(context)
+        val cachedEmojis = getCachedEmojis(context)
         Log.v("TAG", "cachedEmojis = $cachedEmojis")
         if (cachedEmojis != null) {
             _emojiList.value = cachedEmojis
@@ -48,30 +56,37 @@ class EmojiListViewModel() : ViewModel() {
         }
     }
 
-    private fun getCahedEmojis(context: Context): List<Emoji> {
+    fun getCachedEmojis(context: Context): List<Emoji>? {
         val sharedPreferences = context.getSharedPreferences("emoji_cache", Context.MODE_PRIVATE)
-        val emojiSaved = sharedPreferences.getString("emoji", null)
-        Log.v("TAG", "emojis saved = $emojiSaved")
+        val emojisSaved = sharedPreferences.getString("emojis", null)
+        Log.v("TAG", "emojis saved = $emojisSaved")
 
-        return emojiSaved?.let {//.let -> executa apenas se emojisSaved n for nulo
+        return emojisSaved?.let {//.let -> executa apenas se emojisSaved n for nulo
             //vamos "converter" JSON para uma lista de emojis com o Gson
             //val emojis = Gson().fromJson(it, Array<Emoji>::class.java).toList()
             //emojis
 
-            val moshi: Moshi = Moshi.Builder().build()
+            val moshi: Moshi = Moshi.Builder()
+                .addLast(KotlinJsonAdapterFactory())
+                .build()
+            Log.v("TAG", "1")
+
             //criamos um adaptador JSON específico para a classe Emoji, que indica ao Moshi como converter objetos dessa classe para JSON e vice-versa
-            val jsonAdapter: JsonAdapter<List<Emoji>> = moshi.adapter<List<Emoji>>(Types.newParameterizedType(List::class.java, Emoji::class.java))
+            val listjsonAdapter: JsonAdapter<List<Emoji>> = moshi.adapter(Types.newParameterizedType(List::class.java, Emoji::class.java).rawType)
+            Log.v("TAG", "$listjsonAdapter")
 
             // usamos o adaptador para desserializar a string JSON (it) em um objeto Emoji.
-            val emoji = jsonAdapter.fromJson(it) ?: emptyList()
+            val emoji = listjsonAdapter.fromJson(it)
+            Log.v("TAG", "3")
 
             // imprimimos o objeto desserializado.
             println(emoji)
+            Log.v("TAG", "4")
 
             //retorna o objeto Emoji desserializado
-           emoji
+            emoji
 
-        } ?: emptyList()
+        }
     }
 
 
@@ -95,7 +110,6 @@ class EmojiListViewModel() : ViewModel() {
         editor.apply()
         //serialização
     }
-
     /*
     *   Types.newParameterizedType(//cria um tipo de parâmetro usando as classes fornecidas.
         List::class.java, //Obtém a representação da classe List em Java. List é uma interface genérica, mas aqui é usada sem parâmetros de tipo, para representar uma lista sem tipo específico.
@@ -117,7 +131,7 @@ class EmojiListViewModel() : ViewModel() {
                 Log.v("TAG", e.toString())
             }
         }
-    }
+    }*/
 
 
     fun removeEmoji(position: Int) {
