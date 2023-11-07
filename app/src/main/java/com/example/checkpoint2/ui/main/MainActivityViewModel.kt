@@ -35,22 +35,26 @@ class MainActivityViewModel : ViewModel() {
         } else if (urlEmoji!= null) {
             _emoji.setValue(Emoji(name = "", imgSrc = urlEmoji))
             _avatar.setValue(null)
-        }
+        }else(Log.v("TAG", "Não há dados"))
     }
 
     fun getEmojis() {
         viewModelScope.launch {
             try {
+                Log.v("TAG", "get emoji()?")
                 // chamada à API com o Retrofit
                 val listResult = EmojiApi.retrofitService.getEmojis()
+                Log.v("TAG", "vai buscar os emojis API")
                 val emoji = listResult.map {
                     Emoji(
                         name = it.key,
                         imgSrc = it.value
                     )
                 } // Mapeia para List<Emoji>
+                Log.v("TAG", "mapeia os emojis")
                 _emojiList.setValue(emoji)  // Atualizar UI
                // _emoji.postValue(emoji.random())
+                Log.v("TAG", "vai buscar os emojis")
 
             } catch (e: Exception) {
                 Log.e("TAG", e.toString())// Lida com os erros
@@ -63,6 +67,8 @@ class MainActivityViewModel : ViewModel() {
             if (emojis.isNotEmpty()) {
                 val randomIndex = (0 until emojis.size).random()
                 _emoji.value = emojis[randomIndex]
+                Log.v("TAG", "vai buscar emojijs random")
+
             }
         }
     }
